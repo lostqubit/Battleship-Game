@@ -1,3 +1,4 @@
-import './style.css';
+import "./style.css";
+import game from "./gameController.js";
 
-console.log('test');
+game.start();
