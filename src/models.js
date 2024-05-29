@@ -1,6 +1,16 @@
-const Ship = (size) => {
-	const length = size;
+const Ship = (name) => {
+	let length;
+	if (name === "carrier") {
+		length = 5;
+	} else if (name === "battleship") {
+		length = 4;
+	} else if (name === "destroyer" || name === "submarine") {
+		length = 3;
+	} else {
+		length = 2;
+	}
 	let hits = 0;
+	const type = name;
 
 	const hit = () => {
 		if (hits < length) hits++;
@@ -12,6 +22,9 @@ const Ship = (size) => {
 	};
 
 	return {
+		get type() {
+			return type;
+		},
 		get length() {
 			return length;
 		},
@@ -45,30 +58,46 @@ const Gameboard = () => {
 	};
 
 	const canPlaceShip = (ship, cell, orientation) => {
+		console.log(board);
 		const [xStart, yStart] = convertCoordinates(cell);
 		if (orientation === 0) {
-			if (xStart + ship.length > 9) return false;
-			for (let i = xStart; i < xStart + ship.length; i++) {
-				if (board[i][yStart] !== 0) return false;
+			if (yStart + ship.length > 9) return false;
+			for (let i = yStart; i < yStart + ship.length; i++) {
+				if (
+					board[xStart][i] !== 0 &&
+					board[xStart][i].type !== ship.type
+				)
+					return false;
 			}
 		}
 		if (orientation === 1) {
-			if (yStart + ship.length > 9) return false;
-			for (let i = yStart; i < yStart + ship.length; i++) {
-				if (board[xStart][i] !== 0) return false;
+			if (xStart + ship.length > 9) return false;
+			for (let i = xStart; i < xStart + ship.length; i++) {
+				if (
+					board[i][yStart] !== 0 &&
+					board[i][yStart].type !== ship.type
+				)
+					return false;
 			}
 		}
 		return true;
 	};
 
 	const placeShip = (ship, cell, orientation) => {
+		for (let i = 0; i < 10; i++) {
+			for (let j = 0; j < 10; j++) {
+				if (board[i][j] !== 0 && board[i][j].type === ship.type) {
+					board[i][j] = 0;
+				}
+			}
+		}
 		const [xStart, yStart] = convertCoordinates(cell);
 		if (orientation === 0) {
-			for (let i = xStart; i < xStart + ship.length; i++)
-				board[i][yStart] = ship;
-		} else {
 			for (let i = yStart; i < yStart + ship.length; i++)
 				board[xStart][i] = ship;
+		} else {
+			for (let i = xStart; i < xStart + ship.length; i++)
+				board[i][yStart] = ship;
 		}
 	};
 
@@ -108,7 +137,13 @@ const Gameboard = () => {
 
 	const generateRandomConfig = () => {
 		init();
-		const ships = [Ship(5), Ship(4), Ship(3), Ship(3), Ship(2)];
+		const ships = [
+			Ship("carrier"),
+			Ship("battleship"),
+			Ship("destroyer"),
+			Ship("submarine"),
+			Ship("patrolBoat"),
+		];
 
 		for (let ship of ships) {
 			placeShipRandom(ship);
@@ -117,6 +152,7 @@ const Gameboard = () => {
 	};
 
 	return {
+		init,
 		canPlaceShip,
 		placeShip,
 		processAttack,

@@ -18,7 +18,6 @@ body {
 #root {
 	height: 100%;
 	background-color: #00193b;
-	overflow: auto;
 }
 
 #root > h1:first-child {
@@ -32,12 +31,19 @@ body {
 #root > div {
 	margin: 40px;
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 500px));
+	grid-template-columns: repeat(auto-fit, 420px);
 	grid-auto-rows: max-content;
 	justify-content: center;
 	column-gap: 100px;
 	row-gap: 30px;
 	align-items: center;
+	overflow: auto;
+}
+
+#root > div > div {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 #root > div > div > h2 {
@@ -49,13 +55,88 @@ body {
 
 .grid {
 	display: grid;
-	grid-template-rows: repeat(10, minmax(30px, 50px));
-	grid-template-columns: repeat(10, minmax(30px, 50px));
+	grid-template-rows: repeat(10, 40px);
+	grid-template-columns: repeat(10, 40px);
 	gap: 2px;
 }
 
 .cell {
 	border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+#ship-div {
+	box-sizing: border-box;
+	padding-top: 50px;
+}
+
+.ships {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+}
+
+.ship-container {
+	border-style: dotted;
+	border-color: rgba(255, 255, 255, 0.5);
+	padding: 5px;
+	border-radius: 10px;
+}
+
+.ships > .ship-container:first-child {
+	height: 25px;
+	width: 208px;
+}
+
+.ships > .ship-container:first-child,
+#carrier {
+	height: 25px;
+	width: 208px;
+}
+
+.ships > .ship-container:nth-child(2),
+#battleship {
+	height: 25px;
+	width: 166px;
+}
+
+.ships > .ship-container:nth-child(3),
+#destroyer {
+	height: 25px;
+	width: 124px;
+}
+
+.ships > .ship-container:nth-child(4),
+#submarine {
+	height: 25px;
+	width: 124px;
+}
+
+.ships > .ship-container:last-child,
+#patrolBoat {
+	height: 25px;
+	width: 82px;
+}
+
+#ship-div > p {
+	color: white;
+	font-family: "Poppins";
+	text-align: center;
+	margin-top: 20px;
+	font-size: 0.9rem;
+}
+
+#ship-div > div:last-child {
+	margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+}
+
+#ship-div > div:last-child > button {
+	width: 100px;
+	height: 25px;
+	font-size: 0.9rem;
 }
 
 .winner {

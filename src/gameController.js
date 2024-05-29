@@ -58,16 +58,19 @@ const game = (() => {
 
 	const start = () => {
 		display.reset();
-		display.generateBoard(1);
-		display.generateBoard(2);
+		playerBoard.init();
+		computerBoard.init();
+		display.loadInitialScreen(playerBoard);
+		// display.generateBoard(1);
+		// display.generateBoard(2);
 
-		playerBoard.generateRandomConfig();
-		computerBoard.generateRandomConfig();
+		// playerBoard.generateRandomConfig();
+		// computerBoard.generateRandomConfig();
 
-		const cells = document.querySelectorAll("#computer>.cell");
-		for (let cell of cells) {
-			cell.addEventListener("click", playRound);
-		}
+		// const cells = document.querySelectorAll("#computer>.cell");
+		// for (let cell of cells) {
+		// 	cell.addEventListener("click", playRound);
+		// }
 	};
 
 	return { start };
