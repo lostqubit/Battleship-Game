@@ -58,26 +58,17 @@ const Gameboard = () => {
 	};
 
 	const canPlaceShip = (ship, cell, orientation) => {
-		console.log(board);
 		const [xStart, yStart] = convertCoordinates(cell);
 		if (orientation === 0) {
-			if (yStart + ship.length > 9) return false;
+			if (yStart + ship.length > 10) return false;
 			for (let i = yStart; i < yStart + ship.length; i++) {
-				if (
-					board[xStart][i] !== 0 &&
-					board[xStart][i].type !== ship.type
-				)
-					return false;
+				if (board[xStart][i] !== 0 && board[xStart][i].type !== ship.type) return false;
 			}
 		}
 		if (orientation === 1) {
-			if (xStart + ship.length > 9) return false;
+			if (xStart + ship.length > 10) return false;
 			for (let i = xStart; i < xStart + ship.length; i++) {
-				if (
-					board[i][yStart] !== 0 &&
-					board[i][yStart].type !== ship.type
-				)
-					return false;
+				if (board[i][yStart] !== 0 && board[i][yStart].type !== ship.type) return false;
 			}
 		}
 		return true;
@@ -93,11 +84,9 @@ const Gameboard = () => {
 		}
 		const [xStart, yStart] = convertCoordinates(cell);
 		if (orientation === 0) {
-			for (let i = yStart; i < yStart + ship.length; i++)
-				board[xStart][i] = ship;
+			for (let i = yStart; i < yStart + ship.length; i++) board[xStart][i] = ship;
 		} else {
-			for (let i = xStart; i < xStart + ship.length; i++)
-				board[i][yStart] = ship;
+			for (let i = xStart; i < xStart + ship.length; i++) board[i][yStart] = ship;
 		}
 	};
 
@@ -137,13 +126,7 @@ const Gameboard = () => {
 
 	const generateRandomConfig = () => {
 		init();
-		const ships = [
-			Ship("carrier"),
-			Ship("battleship"),
-			Ship("destroyer"),
-			Ship("submarine"),
-			Ship("patrolBoat"),
-		];
+		const ships = [Ship("carrier"), Ship("battleship"), Ship("destroyer"), Ship("submarine"), Ship("patrolBoat")];
 
 		for (let ship of ships) {
 			placeShipRandom(ship);

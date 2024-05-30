@@ -40,8 +40,7 @@ const display = (() => {
 		const div = document.createElement("div");
 		div.classList.add("winner");
 		const h1 = document.createElement("h1");
-		if (winner === 1)
-			h1.innerText = "Enemy fleet has been destroyed! You win!";
+		if (winner === 1) h1.innerText = "Enemy fleet has been destroyed! You win!";
 		else h1.innerText = "Your fleet has been destroyed! You Lose!";
 		div.appendChild(h1);
 		root.after(div);
@@ -62,7 +61,6 @@ const display = (() => {
 		const carrier = document.createElement("img");
 		carrier.src = carrierImg;
 		carrier.id = "carrier";
-		//carrier.draggable = "true";
 		shipDiv1.appendChild(carrier);
 
 		const shipDiv2 = document.createElement("div");
@@ -70,7 +68,6 @@ const display = (() => {
 		const battleship = document.createElement("img");
 		battleship.src = battleshipImg;
 		battleship.id = "battleship";
-		// battleship.draggable = "true";
 		shipDiv2.appendChild(battleship);
 
 		const shipDiv3 = document.createElement("div");
@@ -78,7 +75,6 @@ const display = (() => {
 		const destroyer = document.createElement("img");
 		destroyer.src = destroyerImg;
 		destroyer.id = "destroyer";
-		//destroyer.draggable = "true";
 		shipDiv3.appendChild(destroyer);
 
 		const shipDiv4 = document.createElement("div");
@@ -86,15 +82,13 @@ const display = (() => {
 		const submarine = document.createElement("img");
 		submarine.src = submarineImg;
 		submarine.id = "submarine";
-		//submarine.draggable = "true";
-
 		shipDiv4.appendChild(submarine);
+
 		const shipDiv5 = document.createElement("div");
 		shipDiv5.classList.add("ship-container");
 		const patrolBoat = document.createElement("img");
 		patrolBoat.src = patrolBoatImg;
 		patrolBoat.id = "patrolBoat";
-		//patrolBoat.draggable = "true";
 		shipDiv5.appendChild(patrolBoat);
 
 		shipContainer.appendChild(shipDiv1);
@@ -146,11 +140,16 @@ const display = (() => {
 			containment: "#root",
 		});
 
+		$("#carrier").addClass("horizontal");
+		$("#battleship").addClass("horizontal");
+		$("#destroyer").addClass("horizontal");
+		$("#submarine").addClass("horizontal");
+		$("#patrolBoat").addClass("horizontal");
+
 		for (let cell of document.querySelectorAll(".cell")) {
 			$(`#${cell.id}`).droppable({
 				tolerance: "pointer",
 				accept: function (dragElement) {
-					//$(dragElement).draggable('option','revert',false)
 					return true;
 				},
 				drop: function (event, ui) {
@@ -162,93 +161,196 @@ const display = (() => {
 					const dragId = ui.draggable.attr("id");
 					const ship = Ship(dragId);
 					const dropCell = parseInt(event.target.id.split("-")[1]);
-					if (dragId === "carrier") {
-						top = 5;
-						left = -84;
-						cellStart = dropCell - 2;
-						cellEnd = dropCell + 2;
-						console.log(cellStart, dropCell);
-						if (
-							Math.floor(cellStart / 10) !==
-							Math.floor(dropCell / 10)
-						)
-							withinBound = false;
-						if (
-							Math.floor(cellEnd / 10) !==
-							Math.floor(dropCell / 10)
-						)
-							withinBound = false;
-					} else if (dragId === "battleship") {
-						top = 5;
-						left = -83;
-						cellStart = dropCell - 2;
-						cellEnd = dropCell + 1;
-						if (
-							Math.floor(cellStart / 10) !==
-							Math.floor(dropCell / 10)
-						)
-							withinBound = false;
-						if (
-							Math.floor(cellEnd / 10) !==
-							Math.floor(dropCell / 10)
-						)
-							withinBound = false;
-					} else if (
-						dragId === "destroyer" ||
-						dragId === "submarine"
-					) {
-						top = 5;
-						left = -42;
-						cellStart = dropCell - 1;
-						cellEnd = dropCell + 1;
-						if (
-							Math.floor(cellStart / 10) !==
-							Math.floor(dropCell / 10)
-						)
-							withinBound = false;
-						if (
-							Math.floor(cellEnd / 10) !==
-							Math.floor(dropCell / 10)
-						)
-							withinBound = false;
-					} else {
-						top = 5;
-						left = -42;
-						cellStart = dropCell - 1;
-						cellEnd = dropCell;
-						if (
-							Math.floor(cellStart / 10) !==
-							Math.floor(dropCell / 10)
-						)
-							withinBound = false;
-						if (
-							Math.floor(cellEnd / 10) !==
-							Math.floor(dropCell / 10)
-						)
-							withinBound = false;
-					}
+					if (ui.draggable.hasClass("horizontal")) {
+						if (dragId === "carrier") {
+							top = 5;
+							left = -84;
+							cellStart = dropCell - 2;
+							cellEnd = dropCell + 2;
+							if (Math.floor(cellStart / 10) !== Math.floor(dropCell / 10)) withinBound = false;
+							if (Math.floor(cellEnd / 10) !== Math.floor(dropCell / 10)) withinBound = false;
+						} else if (dragId === "battleship") {
+							top = 5;
+							left = -83;
+							cellStart = dropCell - 2;
+							cellEnd = dropCell + 1;
+							if (Math.floor(cellStart / 10) !== Math.floor(dropCell / 10)) withinBound = false;
+							if (Math.floor(cellEnd / 10) !== Math.floor(dropCell / 10)) withinBound = false;
+						} else if (dragId === "destroyer" || dragId === "submarine") {
+							top = 5;
+							left = -42;
+							cellStart = dropCell - 1;
+							cellEnd = dropCell + 1;
+							if (Math.floor(cellStart / 10) !== Math.floor(dropCell / 10)) withinBound = false;
+							if (Math.floor(cellEnd / 10) !== Math.floor(dropCell / 10)) withinBound = false;
+						} else {
+							top = 5;
+							left = -42;
+							cellStart = dropCell - 1;
+							cellEnd = dropCell;
+							if (Math.floor(cellStart / 10) !== Math.floor(dropCell / 10)) withinBound = false;
+							if (Math.floor(cellEnd / 10) !== Math.floor(dropCell / 10)) withinBound = false;
+						}
 
-					if (
-						withinBound &&
-						playerBoard.canPlaceShip(ship, cellStart, 0)
-					) {
-						playerBoard.placeShip(ship, cellStart, 0);
-						$(ui.draggable)
-							.detach()
-							.css({ top: top, left: left })
-							.appendTo(this);
-						ui.draggable.click(() => console.log("rotate"));
+						if (withinBound && playerBoard.canPlaceShip(ship, cellStart, 0)) {
+							playerBoard.placeShip(ship, cellStart, 0);
+							$(ui.draggable).detach().css({ top: top, left: left }).appendTo(this);
+							ui.draggable.unbind("click");
+							ui.draggable.click(() => {
+								const cursorAt = {};
+								if (ui.draggable.hasClass("horizontal")) {
+									const applyCss = { transform: "rotate(90deg)" };
+									if (playerBoard.canPlaceShip(ship, cellStart, 1)) {
+										playerBoard.placeShip(ship, cellStart, 1);
+										if (dragId === "carrier") {
+											applyCss["top"] = 90;
+											applyCss["left"] = -84;
+											cursorAt["top"] = 104;
+											cursorAt["left"] = 13;
+										} else if (dragId === "battleship") {
+											applyCss["top"] = 70;
+											applyCss["left"] = -65;
+											cursorAt["top"] = 83;
+											cursorAt["left"] = 13;
+										} else if (dragId === "destroyer" || dragId === "submarine") {
+											applyCss["top"] = 48;
+											applyCss["left"] = -36;
+											cursorAt["top"] = 62;
+											cursorAt["left"] = 13;
+										} else {
+											applyCss["top"] = 26;
+											applyCss["left"] = -20;
+											cursorAt["top"] = 41;
+											cursorAt["left"] = 13;
+										}
+										$(`#${dragId}`)
+											.detach()
+											.css(applyCss)
+											.appendTo($(`#cell1-${cellStart}`));
+										$(`#${dragId}`).removeClass("horizontal");
+										$(`#${dragId}`).draggable("option", "cursorAt", cursorAt);
+									}
+								} else {
+									const applyCss = { top: 5, left: 0, transform: "rotate(0deg)" };
+									if (playerBoard.canPlaceShip(ship, cellStart, 0)) {
+										playerBoard.placeShip(ship, cellStart, 0);
+										$(`#${dragId}`)
+											.detach()
+											.css(applyCss)
+											.appendTo($(`#cell1-${cellStart}`));
+										$(`#${dragId}`).addClass("horizontal");
+										if (dragId === "carrier") {
+											cursorAt["top"] = 13;
+											cursorAt["left"] = 104;
+										} else if (dragId === "battleship") {
+											cursorAt["top"] = 13;
+											cursorAt["left"] = 83;
+										} else if (dragId === "destroyer" || dragId === "submarine") {
+											cursorAt["top"] = 13;
+											cursorAt["left"] = 62;
+										} else {
+											cursorAt["top"] = 13;
+											cursorAt["left"] = 41;
+										}
+										$(`#${dragId}`).draggable("option", "cursorAt", cursorAt);
+									}
+								}
+							});
+						} else {
+							ui.draggable.draggable("option", "revert", true);
+							setTimeout(() => ui.draggable.draggable("option", "revert", "invalid"), 1);
+						}
 					} else {
-						ui.draggable.draggable("option", "revert", true);
-						setTimeout(
-							() =>
-								ui.draggable.draggable(
-									"option",
-									"revert",
-									"invalid"
-								),
-							1
-						);
+						if (dragId === "carrier") {
+							top = 5;
+							left = -84;
+							cellStart = dropCell - 20;
+							cellEnd = dropCell + 20;
+						} else if (dragId === "battleship") {
+							top = 5;
+							left = -62;
+							cellStart = dropCell - 20;
+							cellEnd = dropCell + 10;
+						} else if (dragId === "destroyer" || dragId === "submarine") {
+							top = 5;
+							left = -42;
+							cellStart = dropCell - 10;
+							cellEnd = dropCell + 10;
+						} else {
+							top = 5;
+							left = -42;
+							cellStart = dropCell - 10;
+							cellEnd = dropCell;
+						}
+
+						if (playerBoard.canPlaceShip(ship, cellStart, 1)) {
+							playerBoard.placeShip(ship, cellStart, 1);
+							$(ui.draggable).detach().css({ top: top, left: left }).appendTo(this);
+							ui.draggable.unbind("click");
+							ui.draggable.click(() => {
+								const cursorAt = {};
+								if (ui.draggable.hasClass("horizontal")) {
+									const applyCss = { transform: "rotate(90deg)" };
+									if (playerBoard.canPlaceShip(ship, cellStart, 1)) {
+										playerBoard.placeShip(ship, cellStart, 1);
+										if (dragId === "carrier") {
+											applyCss["top"] = 90;
+											applyCss["left"] = -84;
+											cursorAt["top"] = 104;
+											cursorAt["left"] = 13;
+										} else if (dragId === "battleship") {
+											applyCss["top"] = 70;
+											applyCss["left"] = -65;
+											cursorAt["top"] = 83;
+											cursorAt["left"] = 13;
+										} else if (dragId === "destroyer" || dragId === "submarine") {
+											applyCss["top"] = 48;
+											applyCss["left"] = -36;
+											cursorAt["top"] = 62;
+											cursorAt["left"] = 13;
+										} else {
+											applyCss["top"] = 26;
+											applyCss["left"] = -20;
+											cursorAt["top"] = 41;
+											cursorAt["left"] = 13;
+										}
+										$(`#${dragId}`)
+											.detach()
+											.css(applyCss)
+											.appendTo($(`#cell1-${cellStart}`));
+										$(`#${dragId}`).removeClass("horizontal");
+										$(`#${dragId}`).draggable("option", "cursorAt", cursorAt);
+									}
+								} else {
+									const applyCss = { top: 5, left: 0, transform: "rotate(0deg)" };
+									if (playerBoard.canPlaceShip(ship, cellStart, 0)) {
+										playerBoard.placeShip(ship, cellStart, 0);
+										$(`#${dragId}`)
+											.detach()
+											.css(applyCss)
+											.appendTo($(`#cell1-${cellStart}`));
+										$(`#${dragId}`).addClass("horizontal");
+										if (dragId === "carrier") {
+											cursorAt["top"] = 13;
+											cursorAt["left"] = 104;
+										} else if (dragId === "battleship") {
+											cursorAt["top"] = 13;
+											cursorAt["left"] = 83;
+										} else if (dragId === "destroyer" || dragId === "submarine") {
+											cursorAt["top"] = 13;
+											cursorAt["left"] = 62;
+										} else {
+											cursorAt["top"] = 13;
+											cursorAt["left"] = 41;
+										}
+										$(`#${dragId}`).draggable("option", "cursorAt", cursorAt);
+									}
+								}
+							});
+						} else {
+							ui.draggable.draggable("option", "revert", true);
+							setTimeout(() => ui.draggable.draggable("option", "revert", "invalid"), 1);
+						}
 					}
 				},
 			});
