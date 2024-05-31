@@ -363,7 +363,7 @@ const display = (() => {
 
 					if ($("#start").hasClass("disabled-btn") && playerBoard.shipCount === 5) {
 						startButton.classList.remove("disabled-btn");
-						startButton.addEventListener("click", () => {
+						$("start").click(() => {
 							document.querySelector("#ship-div").remove();
 							generateBoard(2);
 							$("#carrier").draggable("destroy");
@@ -378,6 +378,28 @@ const display = (() => {
 				},
 			});
 		}
+
+		resetButton.addEventListener("click", () => {
+			playerBoard.init();
+			const applyCss = { top: 0, left: 0, transform: "rotate(0deg)" };
+			$("#carrier").detach().css(applyCss).appendTo($(".ship-container:first-child"));
+			$("#carrier").draggable("option", "cursorAt", { left: 104, top: 13 });
+			$("#carrier").addClass("horizontal");
+			$("#battleship").detach().css(applyCss).appendTo($(".ship-container:nth-child(2)"));
+			$("#battleship").draggable("option", "cursorAt", { left: 83, top: 13 });
+			$("#battleship").addClass("horizontal");
+			$("#destroyer").detach().css(applyCss).appendTo($(".ship-container:nth-child(3)"));
+			$("#destroyer").draggable("option", "cursorAt", { left: 62, top: 13 });
+			$("#destroyer").addClass("horizontal");
+			$("#submarine").detach().css(applyCss).appendTo($(".ship-container:nth-child(4)"));
+			$("#submarine").draggable("option", "cursorAt", { left: 62, top: 13 });
+			$("#submarine").addClass("horizontal");
+			$("#patrolBoat").detach().css(applyCss).appendTo($(".ship-container:last-child"));
+			$("#patrolBoat").draggable("option", "cursorAt", { left: 41, top: 13 });
+			$("#patrolBoat").addClass("horizontal");
+			startButton.classList.add("disabled-btn");
+			$("#start").unbind("click");
+		});
 	};
 
 	return { reset, loadInitialScreen, generateBoard, winnerScreen };
