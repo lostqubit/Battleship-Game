@@ -4,6 +4,7 @@ import destroyerImg from "./icons/destroyer.png";
 import submarineImg from "./icons/submarine.png";
 import patrolBoatImg from "./icons/patrolBoat.png";
 import { Ship } from "./models.js";
+import game from "./gameController.js";
 
 const display = (() => {
 	const root = document.querySelector("#root");
@@ -46,7 +47,7 @@ const display = (() => {
 		root.after(div);
 	};
 
-	const loadInitialScreen = (playerBoard) => {
+	const loadInitialScreen = (playerBoard, computerBoard) => {
 		const div = document.createElement("div");
 		div.id = "ship-div";
 		const heading = document.createElement("h2");
@@ -98,18 +99,25 @@ const display = (() => {
 		shipContainer.appendChild(shipDiv5);
 		div.appendChild(shipContainer);
 		const p = document.createElement("p");
-
 		p.innerText = "Drag the ships to to the grid, and then click to rotate";
-		const buttonDiv = document.createElement("div");
 		div.appendChild(p);
 
+		const buttonDiv1 = document.createElement("div");
+		const startButton = document.createElement("button");
+		startButton.innerText = "Start";
+		startButton.classList.add("disabled-btn");
+		startButton.id = "start";
+		buttonDiv1.appendChild(startButton);
+		div.appendChild(buttonDiv1);
+
+		const buttonDiv2 = document.createElement("div");
 		const randomizeButton = document.createElement("button");
 		randomizeButton.innerText = "Randomize";
 		const resetButton = document.createElement("button");
 		resetButton.innerText = "Reset";
-		buttonDiv.appendChild(randomizeButton);
-		buttonDiv.appendChild(resetButton);
-		div.appendChild(buttonDiv);
+		buttonDiv2.appendChild(randomizeButton);
+		buttonDiv2.appendChild(resetButton);
+		div.appendChild(buttonDiv2);
 
 		container.appendChild(div);
 		generateBoard(1);
@@ -351,6 +359,21 @@ const display = (() => {
 							ui.draggable.draggable("option", "revert", true);
 							setTimeout(() => ui.draggable.draggable("option", "revert", "invalid"), 1);
 						}
+					}
+
+					if ($("#start").hasClass("disabled-btn") && playerBoard.shipCount === 5) {
+						startButton.classList.remove("disabled-btn");
+						startButton.addEventListener("click", () => {
+							document.querySelector("#ship-div").remove();
+							generateBoard(2);
+							$("#carrier").draggable("destroy");
+							$("#battleship").draggable("destroy");
+							$("#destroyer").draggable("destroy");
+							$("#submarine").draggable("destroy");
+							$("#patrolBoat").draggable("destroy");
+							computerBoard.generateRandomConfig();
+							game.start();
+						});
 					}
 				},
 			});

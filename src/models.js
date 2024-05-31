@@ -36,6 +36,7 @@ const Ship = (name) => {
 const Gameboard = () => {
 	const board = [];
 	let sunk = 0;
+	let count = 0;
 
 	for (let i = 0; i < 10; i++) {
 		const row = [];
@@ -75,6 +76,7 @@ const Gameboard = () => {
 	};
 
 	const placeShip = (ship, cell, orientation) => {
+		count++;
 		for (let i = 0; i < 10; i++) {
 			for (let j = 0; j < 10; j++) {
 				if (board[i][j] !== 0 && board[i][j].type === ship.type) {
@@ -135,6 +137,9 @@ const Gameboard = () => {
 	};
 
 	return {
+		get shipCount() {
+			return count;
+		},
 		init,
 		canPlaceShip,
 		placeShip,

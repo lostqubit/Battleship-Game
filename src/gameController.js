@@ -22,10 +22,7 @@ const game = (() => {
 		const y = cell % 10;
 		const res = playerBoard.processAttack(cell);
 		if (res) {
-			renderMove(
-				document.querySelector(`#player>.cell:nth-child(${cell + 1})`),
-				res
-			);
+			renderMove(document.querySelector(`#player>.cell:nth-child(${cell + 1})`), res);
 		} else {
 			generateComputerMove();
 		}
@@ -45,9 +42,7 @@ const game = (() => {
 			} else {
 				generateComputerMove();
 				if (playerBoard.checkGameOver()) {
-					for (let cell of document.querySelectorAll(
-						"#computer>.cell"
-					)) {
+					for (let cell of document.querySelectorAll("#computer>.cell")) {
 						cell.removeEventListener("click", playRound);
 					}
 					display.winnerScreen(2);
@@ -56,11 +51,11 @@ const game = (() => {
 		}
 	};
 
-	const start = () => {
+	const init = () => {
 		display.reset();
 		playerBoard.init();
 		computerBoard.init();
-		display.loadInitialScreen(playerBoard);
+		display.loadInitialScreen(playerBoard, computerBoard);
 		// display.generateBoard(1);
 		// display.generateBoard(2);
 
@@ -73,7 +68,16 @@ const game = (() => {
 		// }
 	};
 
-	return { start };
+	const start = () => {
+		computerBoard.generateRandomConfig();
+
+		const cells = document.querySelectorAll("#computer>.cell");
+		for (let cell of cells) {
+			cell.addEventListener("click", playRound);
+		}
+	};
+
+	return { init, start };
 })();
 
 export default game;
