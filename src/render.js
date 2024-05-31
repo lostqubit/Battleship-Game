@@ -363,7 +363,7 @@ const display = (() => {
 
 					if ($("#start").hasClass("disabled-btn") && playerBoard.shipCount === 5) {
 						startButton.classList.remove("disabled-btn");
-						$("start").click(() => {
+						$("#start").click(() => {
 							document.querySelector("#ship-div").remove();
 							generateBoard(2);
 							$("#carrier").draggable("destroy");
@@ -399,6 +399,83 @@ const display = (() => {
 			$("#patrolBoat").addClass("horizontal");
 			startButton.classList.add("disabled-btn");
 			$("#start").unbind("click");
+		});
+
+		randomizeButton.addEventListener("click", () => {
+			playerBoard.init();
+			const positions = playerBoard.generateRandomConfig();
+			for (let position of positions) {
+				const [ship, cell, orientation] = position;
+				const shipSelector = $(`#${ship.type}`);
+				const target = $(`#cell1-${cell}`);
+
+				const applyCss = {};
+				const cursorAt = {};
+				if (orientation === 0) {
+					shipSelector.addClass("horizontal");
+					applyCss["top"] = 5;
+					applyCss["left"] = 0;
+					applyCss["transform"] = "rotate(0deg)";
+					if (ship.type === "carrier") {
+						cursorAt["top"] = 13;
+						cursorAt["left"] = 104;
+					} else if (ship.type === "battleship") {
+						cursorAt["top"] = 13;
+						cursorAt["left"] = 83;
+					} else if (ship.type === "destroyer" || ship.type === "submarine") {
+						cursorAt["top"] = 13;
+						cursorAt["left"] = 62;
+					} else {
+						cursorAt["top"] = 13;
+						cursorAt["left"] = 41;
+					}
+				} else {
+					shipSelector.removeClass("horizontal");
+					if (ship.type === "carrier") {
+						applyCss["top"] = 90;
+						applyCss["left"] = -84;
+						applyCss["transform"] = "rotate(90deg)";
+						cursorAt["top"] = 104;
+						cursorAt["left"] = 13;
+					} else if (ship.type === "battleship") {
+						applyCss["top"] = 70;
+						applyCss["left"] = -65;
+						applyCss["transform"] = "rotate(90deg)";
+						cursorAt["top"] = 83;
+						cursorAt["left"] = 13;
+					} else if (ship.type === "destroyer" || ship.type === "submarine") {
+						applyCss["top"] = 48;
+						applyCss["left"] = -36;
+						applyCss["transform"] = "rotate(90deg)";
+						cursorAt["top"] = 62;
+						cursorAt["left"] = 13;
+					} else {
+						applyCss["top"] = 26;
+						applyCss["left"] = -20;
+						applyCss["transform"] = "rotate(90deg)";
+						cursorAt["top"] = 41;
+						cursorAt["left"] = 13;
+					}
+				}
+
+				shipSelector.detach().css(applyCss).appendTo(target);
+				shipSelector.draggable("option", "cursorAt", cursorAt);
+			}
+
+			if ($("#start").hasClass("disabled-btn") && playerBoard.shipCount === 5) {
+				startButton.classList.remove("disabled-btn");
+				$("#start").click(() => {
+					document.querySelector("#ship-div").remove();
+					generateBoard(2);
+					$("#carrier").draggable("destroy");
+					$("#battleship").draggable("destroy");
+					$("#destroyer").draggable("destroy");
+					$("#submarine").draggable("destroy");
+					$("#patrolBoat").draggable("destroy");
+					computerBoard.generateRandomConfig();
+					game.start();
+				});
+			}
 		});
 	};
 

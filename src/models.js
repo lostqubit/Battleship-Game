@@ -122,19 +122,20 @@ const Gameboard = () => {
 		const [cell, orientation] = generateRandomCoords();
 		if (canPlaceShip(ship, cell, orientation)) {
 			placeShip(ship, cell, orientation);
+			return [ship, cell, orientation];
 		} else {
-			placeShipRandom(ship);
+			return placeShipRandom(ship);
 		}
 	};
 
 	const generateRandomConfig = () => {
 		init();
 		const ships = [Ship("carrier"), Ship("battleship"), Ship("destroyer"), Ship("submarine"), Ship("patrolBoat")];
-
+		const positions = [];
 		for (let ship of ships) {
-			placeShipRandom(ship);
+			positions.push(placeShipRandom(ship));
 		}
-		console.log(board);
+		return positions;
 	};
 
 	return {

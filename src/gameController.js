@@ -56,16 +56,6 @@ const game = (() => {
 		playerBoard.init();
 		computerBoard.init();
 		display.loadInitialScreen(playerBoard, computerBoard);
-		// display.generateBoard(1);
-		// display.generateBoard(2);
-
-		// playerBoard.generateRandomConfig();
-		// computerBoard.generateRandomConfig();
-
-		// const cells = document.querySelectorAll("#computer>.cell");
-		// for (let cell of cells) {
-		// 	cell.addEventListener("click", playRound);
-		// }
 	};
 
 	const start = () => {
