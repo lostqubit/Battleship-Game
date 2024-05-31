@@ -122,30 +122,33 @@ const display = (() => {
 		container.appendChild(div);
 		generateBoard(1);
 
+		const h = $(window).height();
+		const w = $(window).width();
+
 		$("#carrier").draggable({
 			cursorAt: { left: 104, top: 13 },
 			revert: "invalid",
-			containment: "#root",
+			containment: [0, 0, w - 208, h - 25],
 		});
 		$("#battleship").draggable({
 			cursorAt: { left: 83, top: 13 },
 			revert: "invalid",
-			containment: "#root",
+			containment: [0, 0, w - 166, h - 25],
 		});
 		$("#destroyer").draggable({
 			cursorAt: { left: 62, top: 13 },
 			revert: "invalid",
-			containment: "#root",
+			containment: [0, 0, w - 124, h - 25],
 		});
 		$("#submarine").draggable({
 			cursorAt: { left: 62, top: 13 },
 			revert: "invalid",
-			containment: "#root",
+			containment: [0, 0, w - 124, h - 25],
 		});
 		$("#patrolBoat").draggable({
 			cursorAt: { left: 41, top: 13 },
 			revert: "invalid",
-			containment: "#root",
+			containment: [0, 0, w - 82, h - 25],
 		});
 
 		$("#carrier").addClass("horizontal");
