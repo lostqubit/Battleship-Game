@@ -44,7 +44,19 @@ const display = (() => {
 		if (winner === 1) h1.innerText = "Enemy fleet has been destroyed! You win!";
 		else h1.innerText = "Your fleet has been destroyed! You Lose!";
 		div.appendChild(h1);
+
+		const buttonDiv = document.createElement("div");
+		const playAgainButton = document.createElement("button");
+		playAgainButton.innerText = "Play Again";
+		buttonDiv.appendChild(playAgainButton);
+		div.appendChild(buttonDiv);
+
 		root.after(div);
+
+		playAgainButton.addEventListener("click", () => {
+			game.init();
+			div.remove();
+		});
 	};
 
 	const loadInitialScreen = (playerBoard, computerBoard) => {

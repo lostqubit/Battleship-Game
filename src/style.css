@@ -190,8 +190,14 @@ button:hover {
 	color: white;
 	font-family: "Poppins";
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	gap: 15px;
+}
+
+.winner > h1 {
+	text-align: center;
 }
 
 footer {
